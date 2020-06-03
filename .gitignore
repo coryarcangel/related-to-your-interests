@@ -6,3 +6,4 @@ job/
 .DS_Store
 package-lock.json
 cron*
+*oauth*

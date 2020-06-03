@@ -198,7 +198,7 @@ async function downloadNewImages(images,dir){ // Downloads images from URLs to "
 async function uploadVideo(folder,data){ //Uploads video to youtube, using massaged data
     return new Promise((resolve,reject)=> {
         var cmd = 'python'
-        var args =  ['upload_video.py']
+        var args =  ['upload_video.py3']
         console.log("upload file is: ",folder+"/master.mp4")
         args = args.concat([
         '--file',folder+"/master.mp4",
