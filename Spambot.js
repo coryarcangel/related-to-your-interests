@@ -10,7 +10,8 @@ const axios = require("axios")
 var parseString = require('xml2js').parseString;
 const textToSpeech = require('@google-cloud/text-to-speech');
 const ttsClient = new textToSpeech.TextToSpeechClient();
- 
+const path = require("path")
+
 if (require.main === module) {
     (async () => {
         init(await getWebsiteUrls(0))
@@ -21,10 +22,11 @@ if (require.main === module) {
 
 //MAIN FUNCTIONS
 async function init(urls){ //Creates a folde. Runs getSiteData(), synthesizeVideo(), upload()
-    var jobFolder = 'job/job-'+hash()
+    var jobFolder = path.resolve('job/job-'+hash())
+    console.log("jobfolder: ",jobFolder)
     var dirs = [jobFolder+"/",jobFolder+"/audio_segments",jobFolder+"/raw_images",jobFolder+"/resized",jobFolder+"/logs"]
     dirs.map(createFolder)
-    console.log("recent zergnet urls: "+ urls.join("\n"))
+    console.log("recent urls: "+ urls.join("\n"))
     let siteData = await getSiteData(urls,jobFolder)
     await synthesizeVideo(jobFolder)
     await uploadVideo(jobFolder,siteData)
@@ -39,8 +41,8 @@ async function getSiteData(urls,jobFolder){ //Diffbots two urls, combines their 
 }
 async function synthesizeVideo(folder){ // Runs ffmpeg script to gen video from TTS audio, images
     return new Promise((resolve,reject)=> {
-        var cmd = './perform_job.sh'
-        var proc = spawn(cmd, [folder.split("/")[1]]);
+        var cmd = path.resolve('./perform_job.sh')
+        var proc = spawn(cmd, [folder.split("/")[6]]);
         proc.stdout.on('data',console.log);
         proc.stderr.setEncoding("utf8")
         proc.stderr.on('data', console.log);
@@ -55,7 +57,7 @@ async function getWebsiteUrls(offset){ // Finds recent posts, follows their 301s
     let regexp = /https:\/\/www.zergnet.com\/o\/[0-9]*\/[0-9]\/[0-9]\/[0-9]/g;
     let raw = await axios.get("http://zergnet.com/ajax/load_results.php")
     let matches = raw.data.matchAll(regexp)
-  
+
     let list = Array.from(matches).toString().split(",")
     let response1 = await axios.get(list[offset])
     let response2 = await axios.get(list[offset+1])
@@ -73,9 +75,10 @@ async function diffbot(url,folder,i=""){ // Uses the diffbot service to parse we
                 body.push(d)
             }).on('end', function(d) {
                 var filename = folder+"/site-data-"+i+".json"
+                console.log("diffbot filename: ",filename)
                 var data = Buffer.concat(body).toString()
                 fs.writeFile(filename, data, 'utf-8', function(err) {
-                    if(err){ fail(err) } else { success(filename); } 
+                    if(err){ fail(err) } else { success(filename); }
                 });
             });
             }).on('error', function(e) {
@@ -91,7 +94,7 @@ function convertTTS(txt,jobDirectory) { // Converts text to speech using Google 
     function combineAudio(filenames,dir){
         console.log("combining filenames",filenames)
         return new Promise(function(success,fail){
-          var cmd = 'ffmpeg';
+          var cmd = '/usr/local/bin/ffmpeg';
           var outputFileName = dir+'out-master.mp3'
           var args = '-loglevel warning -i '+combineAudioChunks(filenames.length,dir)+outputFileName
           var proc = spawn(cmd, args.split(" "));
@@ -135,11 +138,12 @@ async function massage(jobFolder){ //Composes title, description, images, tags f
     let folder = jobFolder
     let data = [JSON.parse(fs.readFileSync(jobFolder+"/site-data-1.json").toString()),
     JSON.parse(fs.readFileSync(jobFolder+"/site-data-2.json").toString())]
+    console.log("massaging here: ",jobFolder+"/site-data-1.json",'fixed?: ',path.resolve(jobFolder+"/site-data-1.json"))
     let out = {};
     let d = [];
-    try { d[0] = data[0].objects[0]; } 
+    try { d[0] = data[0].objects[0]; }
     catch (error) { throw new Error("Invalid diffbot data file :(") }
-    try { d[1] = data[1].objects[0]; } 
+    try { d[1] = data[1].objects[0]; }
     catch (error) { throw new Error("Invalid diffbot data file :(") }
     out.title = synthesizeStrings(d[0].title,d[1].title)
     out.description = synthesizeStrings(d[0].text.split(". ").slice(0,3).join(". "),d[1].text.split(". ").slice(0,3).join(". "),". ")
@@ -162,10 +166,10 @@ async function massage(jobFolder){ //Composes title, description, images, tags f
                     title: img.title
                 }
             }));
-        } 
+        }
     })
     fs.writeFile(folder+"/combined-data.json", JSON.stringify(out), function(err) {
-        if(err){ throw err } 
+        if(err){ throw err }
     });
     const images = await findNewImages(out.tags.slice(1))
     for(var im in images){
@@ -195,6 +199,7 @@ async function uploadVideo(folder,data){ //Uploads video to youtube, using massa
     return new Promise((resolve,reject)=> {
         var cmd = 'python'
         var args =  ['upload_video.py']
+        console.log("upload file is: ",folder+"/master.mp4")
         args = args.concat([
         '--file',folder+"/master.mp4",
         '--title', data.title.slice(0,99).toUpperCase(),
@@ -252,7 +257,7 @@ function hash(){ // Create random hash for project folder.
     return Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
 }
 function createFolder(dir){ // Create folder if it doesnt exist.
-    if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir);
+    if (!fs.existsSync(path.resolve(dir))){
+        fs.mkdirSync(path.resolve(dir));
     }
 }

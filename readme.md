@@ -2,6 +2,9 @@
 
 ## SETUP:
 
+**Diffbot API**
+    export DIFFBOT_TOKEN="ENTER_TOKEN_HERE"
+
 **Image search:**
 Follow directions here: https://www.npmjs.com/package/google-images
 and add these values to your path:
@@ -19,11 +22,19 @@ Follow instructions here: https://developers.google.com/youtube/v3/guides/upload
 
     export GOOGLE_CLIENT_SECRETS="/path/to/client_secrets.json"
 
+**Slack Bot**
+    export SLACK_WEBHOOK="ENTER_WEBHOOK_HERE"
+
+Make bash script executable
+    chmod a+x perform_job.sh
+Install node packages
+    npm install
+
 For upload to work, you need to set up a python virtual environment with the client(one-time only):
 
     pip install virtualenv
     virtualenv upload
-    upload/bin/pip install google-api-python-client oauth2client requests
+    upload/bin/pip install google-api-python-client oauth2client requests httplib
 
 You MUST enter the environment before running script!
 

@@ -1,0 +1,8 @@
+node_modules
+*client_secrets*
+*warm-height*
+upload/
+job/
+.DS_Store
+package-lock.json
+cron*
