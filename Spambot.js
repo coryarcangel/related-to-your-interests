@@ -143,7 +143,7 @@ async function massage(jobFolder){ //Composes title, description, images, tags f
     catch (error) { throw new Error("Invalid diffbot data file :(") }
     out.title = synthesizeStrings(d[0].title,d[1].title)
     out.description = synthesizeStrings(d[0].text.split(". ").slice(0,3).join(". "),d[1].text.split(". ").slice(0,3).join(". "),". ")
-    out.text = synthesizeStrings(d[0].text,d[1].text," ")
+    out.text = synthesizeStrings(d[0].text,d[1].text,". ")
     out.tags = [jobFolder.replace('job/job-','')]
     out.images = []
     d.forEach((dd,i) => {
@@ -194,7 +194,7 @@ async function downloadNewImages(images,dir){ // Downloads images from URLs to "
 async function uploadVideo(folder,data){ //Uploads video to youtube, using massaged data
     return new Promise((resolve,reject)=> {
         var cmd = 'python'
-        var args =  ['upload_video.py']
+        var args =  ['upload_video.py3']
         args = args.concat([
         '--file',folder+"/master.mp4",
         '--title', data.title.slice(0,99).toUpperCase(),
