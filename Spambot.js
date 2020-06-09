@@ -13,7 +13,7 @@ const ttsClient = new textToSpeech.TextToSpeechClient();
  
 if (require.main === module) {
     (async () => {
-        init(await getWebsiteUrls(0))
+        init(await getWebsiteUrls(3))
     })()
 } else {
     module.exports = { getWebsiteUrls, init }
