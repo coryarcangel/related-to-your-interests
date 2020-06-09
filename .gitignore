@@ -1,0 +1,7 @@
+job/
+node_modules/
+cron*
+*secrets*
+*oauth2*
+*warm-height*
+package-lock.json
