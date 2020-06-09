@@ -19,4 +19,4 @@ seconds=${time:6:2}
 time_per_frame=$(echo "($hours_in_seconds + $minutes_in_seconds + $seconds) / $filecount " | bc -l)
 echo "Framerate: ${time_per_frame:0:6}; $time / $filecount"
 
-ffmpeg -framerate 1/${time_per_frame:0:6} -pattern_type glob -i 'job/'$1'/resized/*.jpg'  -i 'job/'$1'/out-master.mp3' -c:v libx264 -pix_fmt yuv420p -loglevel warning 'job/'$1'/master.mp4' >> job/$1/logs/gen-video.txt
+ffmpeg -framerate 1/${time_per_frame:0:6} -pattern_type glob -i 'job/'$1'/resized/*.jpg'  -i 'job/'$1'/out-master.mp3' -c:v libx264 -pix_fmt yuv420p -loglevel warning -strict -2 'job/'$1'/master.mp4' >> job/$1/logs/gen-video.txt
