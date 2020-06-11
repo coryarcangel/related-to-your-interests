@@ -149,7 +149,7 @@ async function massage(jobFolder){ //Composes title, description, images, tags f
     out.title = synthesizeStrings(d[0].title,d[1].title)
     out.description = synthesizeStrings(d[0].text.split(". ").slice(0,3).join(". "),d[1].text.split(". ").slice(0,3).join(". "),". ")
     out.text = synthesizeStrings(d[0].text,d[1].text,". ")
-    out.tags = [jobFolder.replace('job/job-','')]
+    out.tags = [jobFolder.split("/").pop().replace('job/job-','')]
     out.images = []
     d.forEach((dd,i) => {
         if(dd.hasOwnProperty("tags"))
