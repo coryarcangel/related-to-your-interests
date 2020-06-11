@@ -3,11 +3,11 @@
 filecount=0
 for file in job/$1/raw_images/*.jpg
 do
-	/usr/local/bin/ffmpeg -i $file -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" -loglevel warning job/$1/resized/image-$filecount.jpg >> /dev/null
+	ffmpeg -i $file -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" -loglevel warning job/$1/resized/image-$filecount.jpg >> /dev/null
     let "filecount+=1"
 done
 
-DUR_STRING="$(/usr/local/bin/ffmpeg -i job/$1/out-master.mp3 2>&1 | grep Duration)"
+DUR_STRING="$(/usr/bin/ffmpeg -i job/$1/out-master.mp3 2>&1 | grep Duration)"
 pat='([0-9][0-9]:[0-9][0-9]:[0-9][0-9])'
 [[ $DUR_STRING =~ $pat ]]
 time=${BASH_REMATCH[0]}

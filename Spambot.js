@@ -42,7 +42,8 @@ async function getSiteData(urls,jobFolder){ //Diffbots two urls, combines their 
 async function synthesizeVideo(folder){ // Runs ffmpeg script to gen video from TTS audio, images
     return new Promise((resolve,reject)=> {
         var cmd = path.resolve('./perform_job.sh')
-        var proc = spawn(cmd, [folder.split("/")[6]]);
+	console.log("folder: ", folder, "piece: ",folder.split("/")[5])
+        var proc = spawn(cmd, [folder.split("/")[5]]);
         proc.stdout.on('data',console.log);
         proc.stderr.setEncoding("utf8")
         proc.stderr.on('data', console.log);
@@ -94,7 +95,7 @@ function convertTTS(txt,jobDirectory) { // Converts text to speech using Google 
     function combineAudio(filenames,dir){
         console.log("combining filenames",filenames)
         return new Promise(function(success,fail){
-          var cmd = '/usr/local/bin/ffmpeg';
+          var cmd = 'ffmpeg';
           var outputFileName = dir+'out-master.mp3'
           var args = '-loglevel warning -i '+combineAudioChunks(filenames.length,dir)+outputFileName
           var proc = spawn(cmd, args.split(" "));
