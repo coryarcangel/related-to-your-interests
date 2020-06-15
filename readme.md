@@ -1,4 +1,5 @@
-
+## Related to your interests bot:
+This code generates videos from online news articles and pictures and uploads them to the [Related to Your Interests Youtube channel](https://www.youtube.com/channel/UC_LfMr7ffUG9q5M3UuxmF0Q) twice a day, at 10AM and 4PM EST.
 
 ## SETUP:
 
@@ -26,8 +27,10 @@ Follow instructions here: https://developers.google.com/youtube/v3/guides/upload
     export SLACK_WEBHOOK="ENTER_WEBHOOK_HERE"
 
 Make bash script executable
-    chmod a+x perform_job.sh
+
+	chmod a+x perform_job.sh
 Install node packages
+
     npm install
 
 For upload to work, you need to set up a python virtual environment with the client(one-time only):
@@ -36,7 +39,7 @@ For upload to work, you need to set up a python virtual environment with the cli
     virtualenv upload
     upload/bin/pip install google-api-python-client oauth2client requests httplib
 
-You MUST enter the environment before running script!
+You must enter the virtual environment before running the script!
 
-    source upload/bin/activate
-    node Spambot.js
+    $ source upload/bin/activate
+    (upload)$ node Spambot.js
