@@ -1,3 +1,26 @@
+                     .-.
+                    o   \     .-.
+                       .----.'   \
+                     .'o)  / `.   o
+                    /         |
+                    \_)       /-.
+                      '_.`    \  \
+                       `.      |  \
+                        |       \ |
+                    .--/`-.     / /
+                  .'.-/`-. `.  .\|
+                 /.' /`._ `-    '-.
+            ____(|__/`-..`-   '-._ \
+           |`------.'-._ `      ||\ \
+           || #   /-.   `   /   || \|
+           ||   #/   `--'  /  /_::_|)__
+           `|____|-._.-`  /  ||`--------`
+                 \-.___.` | / || #      |
+                  \       | | ||   #  # |
+                  /`.___.'\ |.`|________|
+                  | /`.__.'|'.`
+                __/ \    __/ \
+               /__.-.)  /__.-.) LGB
 ## Related to your interests bot:
 This code generates videos from online news articles and pictures and uploads them to the [Related to Your Interests Youtube channel](https://www.youtube.com/channel/UC_LfMr7ffUG9q5M3UuxmF0Q) twice a day, at 10AM and 4PM EST.
 
